@@ -1,0 +1,63 @@
+DROP TABLE products;
+DROP TABLE customer;
+DROP TABLE sales;
+
+CREATE TABLE IF NOT EXISTS products(
+product_code INTEGER PRIMARY KEY AUTOINCREMENT,
+product_name VARCHAR(100),
+price FLOAT,
+stock INTEGER,
+category VARCHAR(100)
+)
+
+CREATE TABLE IF NOT EXISTS customer(
+customer_id INTEGER PRIMARY KEY,
+customer_name VARCHAR(100),
+customer_location VARCHAR(255),
+customer_phone_number INTEGER
+)
+
+CREATE TABLE IF NOT EXISTS sales(
+sales_id INTEGER PRIMARY KEY,
+date DATE,
+order_number INTEGER,
+customer_id INTEGER REFERENCES customer(customer_id),
+customer_name VARCHAR(100),
+product_code INTEGER REFERENCES products(product_code),
+product_name VARCHAR(100),
+quantity INTEGER,
+price FLOAT
+)
+
+INSERT INTO customer(customer_id, customer_name, customer_location, customer_phone_number)
+VALUES(1111, 'Nisha', 'kerala', 8392320),
+	  (1212, 'Oliver', 'kerala', 4353891),
+	  (1216, 'Nila', 'delhi', 3323242),
+	  (1246, 'Vignesh', 'chennai', 1111212),
+	  (1313, 'shiny', 'Maharastra', 5454543),
+	  (1910, 'Mohan', 'mumbai', 9023941),
+	  (2123, 'Biyush', 'Bombay', 1253358),
+	  (3452, 'Alexander', 'West Bengal', 1212134),
+	  (3921, 'Mukesh', 'Manipur', 4232321),
+	  (5334, 'Christy', 'pakistan', 2311111),
+	  (9021, 'Rithika', 'Kashmir', 1121344),
+	  (9212, 'Jessica', 'banglore', 1233435),
+	  (9875, 'Stephen', 'chennai', 1212133)
+
+SELECT * FROM customer;
+SELECT * FROM products;
+SELECT * FROM sales;
+
+---- Write a query to display the order ID, customer ID, order date, price, and quantity columns of the sales table
+SELECT order_number, customer_id, date, price, quantity FROM sales;
+
+---- Write a query to show details from the product table where the category is stationary
+SELECT * FROM products
+WHERE category = 'Stationary';
+
+---- Write a query to display the unique categories in the product table
+SELECT DISTINCT category FROM products;
+
+---- Write a query to display the product details in descending order of price
+SELECT * FROM products
+ORDER BY price DESC;
