@@ -1,0 +1,72 @@
+DROP TABLE students;
+DROP TABLE marksheet;
+
+CREATE TABLE IF NOT EXISTS students(
+student_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+first_name VARCHAR(100) NOT NULL,
+last_name VARCHAR(100) NOT NULL,
+class INTEGER,
+age INTEGER
+)
+
+CREATE TABLE IF NOT EXISTS marksheet(
+marksheet_id INTEGER PRIMARY KEY AUTOINCREMENT,
+student_id INTEGER REFERENCES students(student_id),
+score INTEGER,
+year INTEGER,
+ranking INTEGER,
+class INTEGER REFERENCES students(class)
+)
+
+INSERT INTO students(first_name, last_name, class, age)
+VALUES('krishna', 'gee', 10, 18),
+	  ('Stephen', 'Christ', 10, 17),
+	  ('Kailash', 'kumar', 10, 18),
+	  ('ashish', 'jain', 10, 16),
+	  ('khusbu', 'jain', 10, 17),
+	  ('madhan', 'lal', 10, 16),
+	  ('saurab', 'kothari', 10, 15),
+	  ('vinesh', 'roy', 10, 14),
+	  ('rishika', 'r', 10, 15),
+	  ('sara', 'rayan', 10, 16),
+	  ('rosy', 'kumar', 10, 16)
+
+
+INSERT INTO marksheet(score, year, ranking, class, student_id)
+VALUES(989, 2014, 1, 10, 1),
+	  (454, 2014, 10, 10, 2),
+	  (880, 2014, 4, 10, 3),
+	  (870, 2014, 5, 10, 4),
+	  (720, 2014, 7, 10, 5),
+	  (670, 2014, 8, 10, 6),
+	  (900, 2014, 3, 10, 7),
+	  (540, 2014, 9, 10, 8),
+	  (801, 2014, 6, 10, 9),
+	  (420, 2014, 11, 10, 10),
+	  (970, 2014, 2, 10, 11),
+	  (720, 2014, 12, 10, 12)
+	  
+SELECT * FROM marksheet;
+SELECT * FROM students;
+--- Write a query to display the student ID and first name of every student in the students table whose
+--- age is greater than or equal to 16 and whose last name is Kumar 
+SELECT student_id, first_name FROM students
+WHERE age >= 16 AND last_name = 'kumar';
+
+--- Write a query to display the details of every student from the marksheet table whose score is between 800 and 1000
+SELECT * FROM marksheet
+WHERE score BETWEEN 800 AND 1000;
+
+---Write a query to increase the score in the marksheet table by five and create a new score column to display this new score 
+SELECT score, (score + 5) as increased_score FROM marksheet;
+
+--- Write a query to display the marksheet table in descending order of the score 
+SELECT * FROM marksheet
+ORDER BY score DESC;
+
+---Write a query to display the details of every student whose first name starts with an ‘a’ 
+SELECT * FROM students
+WHERE first_name LIKE 'a%';
+
+
+
