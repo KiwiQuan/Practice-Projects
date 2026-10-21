@@ -1,0 +1,49 @@
+DROP TABLE employees;
+
+CREATE TABLE IF NOT EXISTS employees(
+emp_id INTEGER PRIMARY KEY,
+f_name VARCHAR(100),
+l_name VARCHAR(100),
+job_id VARCHAR(100),
+salary INTEGER,
+manager_id INTEGER,
+dept_id INTEGER
+)
+
+SELECT * FROM employees ORDER BY salary;
+
+--- Execute SQL code to retrieve the first and last names of employees with a salary higher than Calvin. 
+--- Utilize joins to compare employee salaries.
+SELECT e1.f_name, e1.l_name, e1.salary, e2.salary as Calvins_Salary FROM employees e1
+JOIN employees e2 on e2.f_name = 'Calvin'
+WHERE e1.salary > e2.salary;
+
+--- Execute SQL code to display employee ID and last name of those with a salary greater than the average salary of all employees. 
+--- Utilize subqueries to calculate the average.
+SELECT avg(salary) FROM employees;
+
+SELECT emp_id, l_name, salary FROM employees
+WHERE salary > (SELECT avg(salary) FROM employees);
+
+--- Execute SQL code to display employee ID and first name of those with a salary higher than the job_id - MW789, sorted by salary. 
+--- Utilize set operations to compare salaries with the job_id - MW789.
+SELECT emp_id, f_name, job_id, salary FROM employees
+INTERSECT
+SELECT emp_id, f_name, job_id, salary FROM employees
+WHERE salary > (SELECT salary FROM employees WHERE job_id = 'MW789')
+ORDER BY salary ASC;
+
+--- Execute SQL code to display the top three earners' first names, employee IDs, and salaries.
+--- Utilize a subquery in the FROM  clause to identify the top earners based on salary and a join to retrieve full employee details.
+SELECT 
+    e.f_name, 
+    e.emp_id, 
+    e.salary
+FROM (
+    SELECT emp_id, f_name, salary
+    FROM employees
+    ORDER BY salary DESC
+    LIMIT 3
+) AS top_earners
+JOIN employees e ON e.emp_id = top_earners.emp_id;
+
