@@ -1,0 +1,31 @@
+CourseID,CourseName,Department
+101,Intro to CS,Computer Science
+102,Microeconomics,Economics
+103,General Physics,Physics
+104,Calculus I,Mathematics
+105,Biology 101,Biology
+106,Software Engineering,Computer Science
+107,Macroeconomics,Economics
+108,Thermodynamics,Physics
+109,Linear Algebra,Mathematics
+110,Genetics,Biology
+111,Database Systems,Computer Science
+112,Business Analytics,Business
+113,Quantum Physics,Physics
+114,Calculus II,Mathematics
+115,Microbiology,Biology
+116,Data Structures,Computer Science
+117,International Economics,Economics
+118,Electromagnetism,Physics
+119,Discrete Mathematics,Mathematics
+120,Ecology,Biology
+121,Machine Learning,Computer Science
+122,Financial Management,Business
+123,Classical Mechanics,Physics
+124,Statistics I,Mathematics
+125,Molecular Biology,Biology
+126,Computer Networks,Computer Science
+127,Econometrics,Economics
+128,Optics,Physics
+129,Probability Theory,Mathematics
+130,Biochemistry,Biology
