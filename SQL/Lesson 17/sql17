@@ -1,0 +1,98 @@
+DROP TABLE students;
+DROP TABLE courses;
+DROP TABLE instructors;
+DROP TABLE enrollments;
+
+
+CREATE TABLE IF NOT EXISTS students(
+studentID INTEGER PRIMARY KEY AUTOINCREMENT,
+firstName VARCHAR(100),
+lastName VARCHAR(100),
+dob DATE,
+major VARCHAR(100),
+gpa INTEGER
+)
+
+CREATE TABLE IF NOT EXISTS courses(
+courseID INTEGER PRIMARY KEY,
+courseName VARCHAR(100),
+department VARCHAR(100)
+)
+
+CREATE TABLE IF NOT EXISTS instructors(
+instructorID INTEGER PRIMARY KEY,
+instructorName VARCHAR(100),
+department VARCHAR(100) REFERENCES courses(department)
+)
+
+CREATE TABLE IF NOT EXISTS enrollments(
+enrollmentID INTEGER PRIMARY KEY,
+studentID INTEGER REFERENCES students(studentID),
+courseID INTEGER REFERENCES courses(courseID),
+semester VARCHAR(100),
+grade VARCHAR(100)
+)
+
+SELECT * FROM students;
+SELECT * FROM courses;
+SELECT * FROM instructors;
+SELECT * FROM enrollments;
+---------------------------------------------------------------------------------------------------------------------
+
+DROP VIEW IF EXISTS CourseSummary;
+DROP VIEW IF EXISTS InstructorSchedule;
+
+--- Create a view named CourseSummary that shows the total number of students enrolled in each course
+CREATE VIEW CourseSummary AS 
+SELECT c.courseID, c.courseName, COUNT(e.studentID) as total_students  FROM courses c
+INNER JOIN enrollments e ON e.courseID  = c.courseID   
+GROUP BY c.courseID 
+;
+
+--- Create a view InstructorSchedule that lists each instructor's courses and department
+CREATE VIEW InstructorSchedule AS
+SELECT i.instructorName, c.courseName,  i.department as instructor_dept, c.department as course_dept FROM instructors i
+LEFT JOIN courses c ON c.department = i.department ;
+
+--- Modify the CourseSummary view to list the distinct semesters each course was offered, along with the total student enrolment
+DROP VIEW IF EXISTS CourseSummary;
+
+CREATE VIEW CourseSummary AS
+SELECT c.courseId, c.courseName, e.semester, COUNT(e.studentID) AS total_students FROM courses c
+INNER JOIN enrollments e ON e.courseID = c.courseID
+GROUP BY c.courseID, e.semester  
+;
+
+--- Update InstructorSchedule to show only courses for the current semester
+DROP VIEW IF EXISTS InstructorSchedule;
+
+SELECT  e.courseID, c.courseName, e.semester, i.instructorName FROM instructors i
+INNER JOIN courses c on i.department = c.department 
+INNER JOIN enrollments e on c.courseID = e.courseID
+WHERE e.semester = 'Fall 2023'
+;
+
+--- Create a view EligibleGraduates that lists students eligible for graduation whose GPA is greater than or equal to 3.7
+CREATE VIEW EligibleGraduates AS
+SELECT * FROM students
+WHERE gpa > 3.7;
+
+--- Rename CourseSummary to CourseEnrolmentSummary
+DROP VIEW IF EXISTS CourseSummary;
+
+CREATE VIEW CourseEnrolmentSummary AS
+SELECT c.courseId, c.courseName, e.semester, COUNT(e.studentID) AS total_students FROM courses c
+INNER JOIN enrollments e ON e.courseID = c.courseID
+GROUP BY c.courseID, e.semester  
+;
+
+--- Drop View EligibleGraduates
+DROP VIEW IF EXISTS InstructorSchedule;
+
+--- Create a CTE named SemesterCourses to list all courses offered in the current semester
+WITH SemesterCourses AS (
+SELECT  e.courseID, c.courseName, e.semester FROM enrollments e
+INNER JOIN courses c on e.courseID = c.courseID
+WHERE e.semester = 'Fall 2023'
+)
+SELECT * FROM SemesterCourses; 
